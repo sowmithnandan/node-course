@@ -4,7 +4,7 @@ var app=express();
 var fs=require('fs');
 
 hbs.registerPartials(__dirname+'/views/partials');
-
+var port =process.env.PORT|| 3000;
 hbs.registerHelper('getCurrentYear',()=>{
     return new Date().getFullYear();
 });
@@ -34,7 +34,7 @@ app.use((req,res,next)=>{
     next();
 });
 
-var flag=1;
+var flag=0;
 app.use((req,res,next)=>{
     if(flag==1)
         {
@@ -48,10 +48,8 @@ app.use((req,res,next)=>{
 
 app.set('view engine','hbs');
 app.get('/',(req,res)=>{
-    res.send({
-        Name:'Sowmith Nandan',
+       res.render('main.hbs');
 
-    });
 });
 
 app.get('/about',(req,res)=>{
@@ -61,11 +59,13 @@ app.get('/about',(req,res)=>{
     });
 });
 
-app.get('/about/bad',(req,res)=>{
+app.get('/about/error',(req,res)=>{
     res.render('about-bad.hbs',{
         ErrorMessage:'Something went wrong',
         // CurrentYear:new Date().getFullYear()
     });
 });
 
-app.listen(3000);
+app.listen(port,()=>{
+    console.log(`Server has started in port:${port}`);
+});
